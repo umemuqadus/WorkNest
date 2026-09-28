@@ -1,0 +1,149 @@
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Ambient wash: ice-white canvas with a navy/steel-blue glow so the app
+     doesn't read as a flat grey template. Fixed so it stays while scrolling. */
+  body {
+    @apply bg-slate-50 text-slate-900;
+    background-image:
+      radial-gradient(1100px 420px at 12% -8%, rgba(2, 132, 199, 0.1), transparent 60%),
+      radial-gradient(900px 480px at 100% 0%, rgba(30, 58, 138, 0.09), transparent 55%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-blue-100 text-blue-950;
+  }
+
+  /* Keyboard users always get a visible navy outline; form fields keep
+     their own ring styling instead of a double indicator. */
+  :focus-visible {
+    outline: 2px solid #1e3a8a;
+    outline-offset: 2px;
+  }
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-slate-300;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  /* Accessibility: honor reduced-motion preferences. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-slate-200/70 bg-white;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 10px 28px -20px rgba(15, 23, 42, 0.28);
+  }
+
+  /* interactive card: gentle lift + navy edge */
+  .card-hover {
+    @apply transition duration-200;
+  }
+  .card-hover:hover {
+    @apply -translate-y-0.5 border-blue-300/80;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 2px 4px rgba(15, 23, 42, 0.05),
+      0 16px 34px -22px rgba(30, 58, 138, 0.45);
+  }
+
+  /* compact meta chip used on list + detail pages */
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600;
+  }
+
+  .page-title {
+    @apply text-[1.6rem] font-semibold leading-tight tracking-tight text-slate-900;
+  }
+
+  /* signature: gradient accent rule in front of every page heading */
+  .page-title::before {
+    content: '';
+    display: inline-block;
+    height: 0.95em;
+    width: 4px;
+    border-radius: 9999px;
+    margin-right: 0.65rem;
+    vertical-align: -0.06em;
+    background-image: linear-gradient(to bottom, #0284c7, #1e3a8a);
+  }
+
+  /* thin accent rule used beside section headings */
+  .rule {
+    @apply h-4 w-1 rounded-full bg-blue-700;
+  }
+
+  .label-base {
+    @apply mb-1.5 block text-[13px] font-semibold text-slate-700;
+  }
+}

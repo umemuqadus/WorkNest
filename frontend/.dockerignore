@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+.vite/
+coverage/
+*.tsbuildinfo
+*.local
+*.log
+.env
+.env.*
+!.env.example
+.git
