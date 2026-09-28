@@ -250,7 +250,8 @@ Status codes: `400` bad request · `401` unauthenticated · `404` not found/fore
 # backend — 81 tests (auth, CRUD, authorization/isolation, applications, analytics, AI fallback)
 cd backend && pytest
 
-# frontend — component/routing/labels/error-mapping tests
+# frontend — 121 tests (UI components, routing/auth guards, labels, formatters,
+#  debounce hook, API error mapping) across 8 files
 cd frontend && npm test
 
 # live end-to-end smoke test (server running on :8000)
@@ -269,6 +270,9 @@ cd backend && python scripts/smoke_test.py
   regeneration. Without an API key the mock provider is used (clearly flagged in the UI and via
   `GET /api/ai/status`).
 - **Rate limiting** is in-memory (per-process) — swap for Redis in a multi-instance deployment.
+- **Frontend is code-split**: every page is a `React.lazy` route and Vite emits separate vendor
+  chunks (`react`, `router`, `tanstack`, `vendor`, `icons`). Initial JS+CSS is ~524 kB instead of
+  a single ~983 kB bundle, and recharts (used only by Analytics) is a lazy 333 kB chunk.
 - **Resume files** are stored as text + optional `file_url` (link-based); direct file upload/S3
   is not included.
 - **Docker**: `docker-compose.yml` ships `db` + `api` + `web`; the API entrypoint waits for
