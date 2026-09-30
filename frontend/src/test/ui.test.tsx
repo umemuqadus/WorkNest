@@ -8,6 +8,7 @@ import ErrorState from '@/components/ui/ErrorState'
 import Input from '@/components/ui/Input'
 import Modal from '@/components/ui/Modal'
 import Pagination from '@/components/ui/Pagination'
+import PasswordInput from '@/components/ui/PasswordInput'
 import Spinner from '@/components/ui/Spinner'
 import Tabs from '@/components/ui/Tabs'
 import { Card, CardBody, CardHeader } from '@/components/ui/Card'
@@ -72,6 +73,45 @@ describe('Input', () => {
     render(<Input label="Email" />)
     fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'a@b.com' } })
     expect(screen.getByLabelText('Email')).toHaveValue('a@b.com')
+  })
+})
+
+describe('PasswordInput', () => {
+  const onChange = vi.fn()
+
+  it('masks the value by default', () => {
+    render(<PasswordInput label="Password" value="s3cret" onChange={onChange} />)
+    expect(screen.getByLabelText('Password')).toHaveAttribute('type', 'password')
+    expect(screen.getByRole('button', { name: 'Show password' })).toBeInTheDocument()
+  })
+
+  it('reveals the value on toggle without changing it', () => {
+    render(<PasswordInput label="Password" value="s3cret" onChange={onChange} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Show password' }))
+
+    const field = screen.getByLabelText('Password')
+    expect(field).toHaveAttribute('type', 'text')
+    expect(field).toHaveValue('s3cret')
+    expect(screen.getByRole('button', { name: 'Hide password' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+  })
+
+  it('masks the value again on a second toggle', () => {
+    render(<PasswordInput label="Password" value="s3cret" onChange={onChange} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Show password' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Hide password' }))
+    expect(screen.getByLabelText('Password')).toHaveAttribute('type', 'password')
+    expect(screen.getByRole('button', { name: 'Show password' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    )
+  })
+
+  it('keeps the hint and error slots of Input', () => {
+    render(<PasswordInput label="Password" hint="At least 8 characters." />)
+    expect(screen.getByText('At least 8 characters.')).toBeInTheDocument()
   })
 })
 

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import { Card, CardBody, CardHeader } from '@/components/ui/Card'
 import Input from '@/components/ui/Input'
+import PasswordInput from '@/components/ui/PasswordInput'
 import Badge from '@/components/ui/Badge'
 import { useAuth } from '@/context/AuthContext'
 import { getErrorMessage, getFieldErrors } from '@/lib/api'
@@ -126,17 +127,15 @@ export default function SettingsPage() {
         />
         <CardBody className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
-            <Input
+            <PasswordInput
               label="Current password"
-              type="password"
               autoComplete="current-password"
               value={passwords.current_password}
               onChange={(e) => setPasswords({ ...passwords, current_password: e.target.value })}
               error={passwordErrors.current_password ?? null}
             />
-            <Input
+            <PasswordInput
               label="New password"
-              type="password"
               autoComplete="new-password"
               value={passwords.new_password}
               onChange={(e) => setPasswords({ ...passwords, new_password: e.target.value })}

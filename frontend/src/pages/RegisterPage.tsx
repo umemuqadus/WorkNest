@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
+import PasswordInput from '@/components/ui/PasswordInput'
 import AuthShell from '@/components/layout/AuthShell'
 import { useAuth } from '@/context/AuthContext'
 import { getErrorMessage, getFieldErrors } from '@/lib/api'
@@ -59,9 +60,8 @@ export default function RegisterPage() {
           onChange={set('email')}
           error={fieldErrors.email ?? null}
         />
-        <Input
+        <PasswordInput
           label="Password"
-          type="password"
           autoComplete="new-password"
           required
           value={form.password}

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
+import PasswordInput from '@/components/ui/PasswordInput'
 import AuthShell from '@/components/layout/AuthShell'
 import { useAuth } from '@/context/AuthContext'
 import { getErrorMessage, getFieldErrors } from '@/lib/api'
@@ -52,20 +53,13 @@ export default function LoginPage() {
           onChange={(e) => setEmail(e.target.value)}
           error={fieldErrors.email ?? fieldErrors.body ?? null}
         />
-        <Input
+        <PasswordInput
           label="Password"
-          type="password"
           autoComplete="current-password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           error={fieldErrors.password ?? null}
-          hint={
-            <span>
-              Demo account: <span className="font-medium">demo@example.com</span> /{' '}
-              <span className="font-medium">Demo123!</span>
-            </span>
-          }
         />
         <Button type="submit" className="w-full" loading={mutation.isPending}>
           Sign in
