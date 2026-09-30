@@ -1,0 +1,11 @@
+# Shell scripts must keep LF endings or Linux containers fail to exec them.
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.conf text eol=lf
+*.yml text eol=lf
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff2 binary

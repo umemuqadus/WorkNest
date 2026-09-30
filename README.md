@@ -98,6 +98,7 @@ Useful overrides (env vars read by `docker-compose.yml`):
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | `POSTGRES_PORT` | `5432` | Host port for Postgres — set `5433` if a local PostgreSQL already owns 5432 |
+| `API_PORT` | `8000` | Host port for the API — set `8001` if something else already owns 8000 |
 | `SEED_DB` | `true` | Set `false` to skip seeding the demo data |
 | `JWT_SECRET_KEY` | dev value | **Change in production** |
 | `AI_PROVIDER` / `GEMINI_API_KEY` / `OPENAI_API_KEY` | `gemini` / empty | Same AI settings as `backend/.env` |
@@ -276,9 +277,11 @@ cd backend && python scripts/smoke_test.py
 - **Resume files** are stored as text + optional `file_url` (link-based); direct file upload/S3
   is not included.
 - **Docker**: `docker-compose.yml` ships `db` + `api` + `web`; the API entrypoint waits for
-  Postgres, runs migrations and seeds on boot. The path exercised end-to-end here is the local
-  run above against a host PostgreSQL 18 instance — run `docker compose up --build` once to
-  confirm the container path in your environment. If a local PostgreSQL already owns port
-  5432, start with `POSTGRES_PORT=5433 docker compose up --build`.
+  Postgres, runs migrations and seeds on boot. The container path is verified end-to-end
+  (`docker compose up --build` → all three containers healthy → 26/26 smoke checks against the
+  containerized API, with nginx proxying `/api` from the web container). If a local PostgreSQL
+  already owns port 5432, start with `POSTGRES_PORT=5433 docker compose up --build`; likewise
+  `API_PORT=8001` if 8000 is taken. `.gitattributes` forces LF endings for `*.sh` / `Dockerfile`
+  / `*.conf` so the Linux containers can exec them (CRLF breaks `entrypoint.sh`).
 - Passwords are hashed with **bcrypt (12 rounds)**; JWTs are stateless (logout clears the token
   client-side).

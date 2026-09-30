@@ -40,7 +40,9 @@ services:
       # Set SEED_DB=true to load the demo user + sample data on first boot
       SEED_DB: ${SEED_DB:-true}
     ports:
-      - "8000:8000"
+      # Change the host port with API_PORT=8001 docker compose up
+      # if something else already uses 8000.
+      - "${API_PORT:-8000}:8000"
     healthcheck:
       test:
         [
